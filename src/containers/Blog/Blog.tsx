@@ -178,11 +178,15 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 let post = {
                     ...this.state.posts[findId]
                 }
+
+                console.log('post :', post);
                 
                 // update properties
                 post.title = titleInputValue;
                 post.body = contentInputValue;
                 post.author = authorInputValue;
+
+                console.log('Updated post :', post);
 
                 const posts = [...this.state.posts];
                 posts[findId] = post;
@@ -419,7 +423,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                         {/* Display button only if selectedPostId exists */}
                         {this.state.selectedPostId ? 
                             <div className="row justify-content-center mb-2">
-                                <Button onClick={this.displayUpdateForm} color="success" className="mb-3">Display Update form</Button>
+                                <Button onClick={this.displayUpdateForm} color="success" className="mb-3">Click here to update a selected Post</Button>
                             </div> 
                         : ''}
 
@@ -434,7 +438,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                                     <Button 
                                         onClick={() => this.updatePostUserHandler(this.state.selectedPostId, true)} 
                                         color="warning" className="mb-3">
-                                            Display Update form
+                                            Update Post
                                     </Button>
                                     {/* <Button onClick={this.clearDataHandler} color="success">Clear Post</Button> */}
                                 </Form> 
@@ -451,8 +455,10 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                                 <InputFieldComponent type="text" ref={this.titleRef} label="Title" forLabel="title" name="title" id="title" placeholder="Please enter a title" class="form-control" />
                                 <TextAreaFieldComponent label="content" forLabel="Content" name="name" id="Content" class="form-control" ref={this.contentRef} placeholder="Please enter a content"/>
                                 <InputFieldComponent type="text" ref={this.authorRef} label="Author" forLabel="Author" name="author" id="author" placeholder="Please enter an Author" class="form-control" />
-                                <Button onClick={this.addDataHandler} color="success">Add Post</Button>
-                                <Button onClick={this.clearDataHandler} color="success">Clear Post</Button>
+                                <div className="mb-2">
+                                    <Button onClick={this.addDataHandler} className="mr-2" color="success">Add Post</Button>
+                                    <Button onClick={this.clearDataHandler} color="success">Clear Post</Button>
+                                </div>
                             </Form>
                         </div>
                     </section>
