@@ -43,7 +43,8 @@ interface PostUserManagerState {
     displayUsers: boolean
     users: Uusers[],
     selectedUserId: number,
-    selectedPostId: number
+    selectedPostId: number,
+    displayUpdateForm: boolean
 }
 
 class Blog extends React.Component<PpostProps, PostUserManagerState>{
@@ -52,6 +53,11 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
     public titleRef: React.RefObject<HTMLInputElement>;
     public contentRef: React.RefObject<HTMLTextAreaElement>;
     public authorRef: React.RefObject<HTMLInputElement>;
+
+    // Set update input fields Post
+    public updatetitleRef: React.RefObject<HTMLInputElement>;
+    public updatecontentRef: React.RefObject<HTMLTextAreaElement>;
+    public updateauthorRef: React.RefObject<HTMLInputElement>;
 
     // Set Form inputs for user Post.
     public nameRef: React.RefObject<HTMLInputElement>;
@@ -71,12 +77,18 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
             users: [],
             selectedUserId: 0,
             selectedPostId: 0,
+            displayUpdateForm: false
         }
 
         // Post Refs
         this.titleRef = React.createRef();
         this.contentRef = React.createRef();
         this.authorRef = React.createRef();
+
+        // update Post refs
+        this.updatetitleRef = React.createRef();
+        this.updatecontentRef = React.createRef();
+        this.updateauthorRef = React.createRef();
 
         // User Refs
         this.nameRef = React.createRef();
@@ -141,6 +153,49 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         this.setState({selectedPostId: id});
     }
 
+
+    /**
+     * Hide/Show display form
+     */
+    public displayUpdateForm = (): void => {
+        let isFormDisplay = !this.state.displayUpdateForm;
+        this.setState({
+            displayUpdateForm: isFormDisplay
+        });
+    }
+
+    public updatePostUserHandler = (id: number, isPost:boolean):void => {
+        let titleInputValue = this.updatetitleRef.current.value;
+        let contentInputValue = this.updatecontentRef.current.value;
+        let authorInputValue = this.updateauthorRef.current.value;
+        
+        if (isPost) {
+            if(titleInputValue !== '' && contentInputValue !== '' && authorInputValue !== '') {
+                let findId = this.state.posts.findIndex(post => {
+                    return post.id === id;
+                })
+                
+                let post = {
+                    ...this.state.posts[findId]
+                }
+                
+                // update properties
+                post.title = titleInputValue;
+                post.body = contentInputValue;
+                post.author = authorInputValue;
+
+                const posts = [...this.state.posts];
+                posts[findId] = post;
+
+                this.setState({
+                    posts: posts
+                });
+                
+            } else {
+                console.log('Error Please try fill in the form');
+            }
+        }
+    }
 
     /**
      * Delete a User or Post
@@ -255,8 +310,6 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         this.zipcodeRef.current.value = '';
     }
 
-
-
     /**
      * Clear form values.
      */
@@ -317,7 +370,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
             marginTop: '10px',
             textAlign: 'center'
         } as any;
-        
+
         return (
             <div style={postSectionStyling} className="container pt-2 pb-4">
                 <h1 style={postTitle}>Post / User Application</h1>
@@ -361,15 +414,43 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                     <section>
                         <FullPost id={this.state.selectedPostId} 
                             deleted={() => this.postUserDeleteHandler(this.state.selectedPostId, true)
-                        } />        
+                        } />
+
+                        {/* Display button only if selectedPostId exists */}
+                        {this.state.selectedPostId ? 
+                            <div className="row justify-content-center mb-2">
+                                <Button onClick={this.displayUpdateForm} color="success" className="mb-3">Display Update form</Button>
+                            </div> 
+                        : ''}
+
+                        {/* Display Update form */}
+                        {this.state.displayUpdateForm ? 
+                            <div className="NewPost">
+                                <h3>Update Post</h3>
+                                <Form>
+                                    <InputFieldComponent type="text" ref={this.updatetitleRef} label="Title" forLabel="title" name="title" id="title" placeholder="Please update title" class="form-control" />
+                                    <TextAreaFieldComponent label="content" forLabel="Content" name="name" id="Content" class="form-control" ref={this.updatecontentRef} placeholder="Please update content"/>
+                                    <InputFieldComponent type="text" ref={this.updateauthorRef} label="Author" forLabel="Author" name="author" id="author" placeholder="Please update Author" class="form-control" />
+                                    <Button 
+                                        onClick={() => this.updatePostUserHandler(this.state.selectedPostId, true)} 
+                                        color="warning" className="mb-3">
+                                            Display Update form
+                                    </Button>
+                                    {/* <Button onClick={this.clearDataHandler} color="success">Clear Post</Button> */}
+                                </Form> 
+                            </div>
+                        : ''}
+
                     </section>
+
+                    {/* Form New Post */}
                     <section>
                         <div className="NewPost">
                             <h3>Add a Post</h3>
                             <Form>
                                 <InputFieldComponent type="text" ref={this.titleRef} label="Title" forLabel="title" name="title" id="title" placeholder="Please enter a title" class="form-control" />
                                 <TextAreaFieldComponent label="content" forLabel="Content" name="name" id="Content" class="form-control" ref={this.contentRef} placeholder="Please enter a content"/>
-                                <InputFieldComponent type="text" ref={this.authorRef} label="Author" forLabel="Author" name="author" id="author" placeholder="Please enter an Autho" class="form-control" />
+                                <InputFieldComponent type="text" ref={this.authorRef} label="Author" forLabel="Author" name="author" id="author" placeholder="Please enter an Author" class="form-control" />
                                 <Button onClick={this.addDataHandler} color="success">Add Post</Button>
                                 <Button onClick={this.clearDataHandler} color="success">Clear Post</Button>
                             </Form>
