@@ -149,7 +149,29 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param id
      * @return void
      */
-    public postSelectedHandler = (id: number):void => {
+    public postSelectedHandler = (event: any, id: number):void => {
+        let findId = this.state.posts.findIndex(post => {
+            return post.id === id;
+        })
+        
+        let post = {
+            ...this.state.posts[findId]
+        }
+
+        console.log('post :', post);
+        
+        // update properties
+        post.title = event.target.value;
+
+        console.log('Updated post :', post);
+
+        const posts = [...this.state.posts];
+        posts[findId] = post;
+
+        this.setState({
+            posts: posts
+        });
+
         this.setState({selectedPostId: id});
     }
 
@@ -323,6 +345,12 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         this.authorRef.current.value = '';
     }
 
+    clearUpdatePostForm = ():void => {
+        this.updatetitleRef.current.value = '';
+        this.updatecontentRef.current.value = '';
+        this.updateauthorRef.current.value = '';
+    }    
+
     /**
      * Toggle posts.
      */
@@ -349,7 +377,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 title={post.title}
                 body={post.body}
                 author={post.author}
-                clicked={() => this.postSelectedHandler(post.id)}
+                clicked={(event) => this.postSelectedHandler(event, post.id)} // add two way binding to change
                 deleted={() => this.postUserDeleteHandler(post.id, true)}
             />
         })
@@ -435,12 +463,14 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                                     <InputFieldComponent type="text" ref={this.updatetitleRef} label="Title" forLabel="title" name="title" id="title" placeholder="Please update title" class="form-control" />
                                     <TextAreaFieldComponent label="content" forLabel="Content" name="name" id="Content" class="form-control" ref={this.updatecontentRef} placeholder="Please update content"/>
                                     <InputFieldComponent type="text" ref={this.updateauthorRef} label="Author" forLabel="Author" name="author" id="author" placeholder="Please update Author" class="form-control" />
-                                    <Button 
-                                        onClick={() => this.updatePostUserHandler(this.state.selectedPostId, true)} 
-                                        color="warning" className="mb-3">
-                                            Update Post
-                                    </Button>
-                                    {/* <Button onClick={this.clearDataHandler} color="success">Clear Post</Button> */}
+                                    <div className="row justify-content-center mb-2">
+                                        <Button 
+                                            onClick={() => this.updatePostUserHandler(this.state.selectedPostId, true)} 
+                                            color="warning" className="mr-2">
+                                                Update Post
+                                        </Button>
+                                        <Button onClick={() => this.clearUpdatePostForm()}>Clear Form</Button>
+                                    </div>
                                 </Form> 
                             </div>
                         : ''}
