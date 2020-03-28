@@ -19,7 +19,7 @@ interface Pposts {
     title: string,
     body: string,
     author: string,
-    clicked?(e: any): void;
+    changed?(e: any): void;
 }
 
 interface Uusers {
@@ -28,6 +28,7 @@ interface Uusers {
     username: string,
     email: string,
     address: address
+    clicked?(e: any): void;
 }
 
 interface address {
@@ -377,7 +378,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 title={post.title}
                 body={post.body}
                 author={post.author}
-                clicked={(event) => this.postSelectedHandler(event, post.id)} // add two way binding to change
+                changed={(event) => this.postSelectedHandler(event, post.id)} // add two way binding to change
                 deleted={() => this.postUserDeleteHandler(post.id, true)}
             />
         })

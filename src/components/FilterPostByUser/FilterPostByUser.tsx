@@ -44,7 +44,30 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
      * @param id
      * @return void
      */
-    public filterPostSelectedHandler = (id: number):void => {
+    public filterPostSelectedHandler = (event: any, id: number):void => {
+        
+        let findId = this.state.filterPosts.findIndex(post => {
+            return post.id === id;
+        })
+        
+        let post = {
+            ...this.state.filterPosts[findId]
+        }
+
+        console.log('post :', post);
+        
+        // update properties
+        post.title = event.target.value;
+
+        console.log('Updated post :', post);
+
+        const posts = [...this.state.filterPosts];
+        posts[findId] = post;
+
+        this.setState({
+            filterPosts: posts
+        });
+        
         this.setState({
             selectedPostId: id
         });
@@ -131,7 +154,7 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
                 title={post.title}
                 body={post.body}
                 author={post.author}
-                clicked={() => this.filterPostSelectedHandler(post.id)}
+                changed={(event) => this.filterPostSelectedHandler(event, post.id)}
                 deleted={() => this.filterPostDeleteHandler(post.id)}
             />
             });
