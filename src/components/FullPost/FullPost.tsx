@@ -2,23 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios'; // add a different approach.
 import { Button } from 'reactstrap';
 import './FullPost.css';
+import { FullPostManager } from '../../interface/fullPost/FullPostManager.interface';
+import  { loadPostInterface } from '../../interface/fullPost/LoadPostInterface.interface'
 
-interface FullPostManager {
-    id: number
-    changedTitle?(e: any): void
-    deleted?(e: any): void
-}
-
-interface loadPostInterface {
-    error: boolean,
-    loadedPost: LoadedPostManager
-}
-
-interface LoadedPostManager {
-    id: number,
-    title: string,
-    body: string
-}
 
 class FullPost extends Component<FullPostManager, loadPostInterface> {
     constructor(props: FullPostManager) {

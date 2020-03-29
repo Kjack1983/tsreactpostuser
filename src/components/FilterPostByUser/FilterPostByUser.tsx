@@ -4,6 +4,8 @@ import axios from 'axios';
 import Post from '../Post/Post';
 import './FilterPostByUser.css';
 
+import { LoadedUserManager } from '../../interface/filterByPost/LoadedUserManager.interface';
+
 // Props interface
 interface FullUserManager {}
 
@@ -13,13 +15,6 @@ interface loadFilterPostInterface {
     filterPosts: LoadedUserManager[],
     inputValue: string,
     selectedPostId: number
-}
-
-interface LoadedUserManager {
-    id: number,
-    title: string,
-    body: string,
-    author: string
 }
 
 class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterface> {
