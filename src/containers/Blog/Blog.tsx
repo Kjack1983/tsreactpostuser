@@ -11,36 +11,12 @@ import FilterPostByUser from '../../components/FilterPostByUser/FilterPostByUser
 import InputFieldComponent from '../../components/InputFieldComponent/InputFieldComponent';
 import TextAreaFieldComponent from '../../components/TextAreaFieldComponent/TextAreaFieldComponent';
 
+//Interfaces
+import Pposts from '../../interface/blog/Pposts.interface';
+import Uusers from '../../interface/blog/Uusers.interface';
 
 // type PpostsProps for setting the Props
 interface PpostProps {}
-
-// Type posts
-interface Pposts {
-    id: number,
-    userId: number,
-    title: string,
-    body: string,
-    author: string,
-    changed?(e: any): void;
-}
-
-// type Users
-interface Uusers {
-    id: number,
-    name: string,
-    username: string,
-    email: string,
-    address: address
-    clicked?(e: any): void;
-}
-
-interface address {
-    street: string,
-    suite: string,
-    city: string,
-    zipcode: string
-}
 
 // type for state.
 interface PostUserManagerState {

@@ -3,17 +3,8 @@ import { Button } from 'reactstrap';
 
 import './Post.css';
 
-interface PostInterface {
-    key: number,
-    title: string,
-    body: string,
-    author: string,
-    clicked?(e:any):void
-    changedTitle?(e: any):void
-    changedAuthor?(e: any):void
-    changedContent?(e: any): void 
-    deleted?(e: any): void
-}
+// Load Interface PostInterface
+import PostInterface from '../../interface/post/PostInterface.interface';
 
 const Post: React.FC<PostInterface> = ({ title, body, clicked, author, changedTitle, changedAuthor, changedContent, deleted }) => {
 
