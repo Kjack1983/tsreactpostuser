@@ -15,10 +15,10 @@ import TextAreaFieldComponent from '../../components/TextAreaFieldComponent/Text
 import Pposts from '../../interface/blog/Pposts.interface';
 import Uusers from '../../interface/blog/Uusers.interface';
 
-// type PpostsProps for setting the Props
+// Type PpostsProps for setting the Props
 interface PpostProps {}
 
-// type for state.
+// Type for state.
 interface PostUserManagerState {
     displayPosts: boolean
     posts: Pposts[],
@@ -83,7 +83,13 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     }
 
+    /**
+     * triggered after JSX is rendered
+     * fetching data from the Api for presentation.
+     * @return void
+     */
     componentDidMount():void {
+
         // Posts
         fetch('http://jsonplaceholder.typicode.com/posts').then(response => {
             return response.json();
@@ -103,7 +109,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
             console.log(err);
         })
 
-        // Posts
+        // Users
         fetch('http://jsonplaceholder.typicode.com/users').then(response => {
             return response.json();
         }).then((response) => {
@@ -122,6 +128,11 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     }
 
+    /**
+     * Update / set post id
+     * @param {id} number
+     * @return void 
+     */
     public postSelectedPostIdHandler = (id: number):void => {
         this.setState({
             selectedPostId: id
@@ -129,22 +140,45 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
     }
 
     /**
-     * Upadate selected post and set selected postId.
-     * @param id
+     * Update title post by id.
+     * @param {object} event
+     * @param {string} field
+     * @param {number} id
      * @return void
      */
     public postSelectedHandlerTitle = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerPost(event, id, 'title');   
     }
 
+    /**
+     * Update author post by id.
+     * @param {object} event
+     * @param {string} field
+     * @param {number} id
+     * @return void
+     */
     public postSelectedHandlerAuthor = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerPost(event, id, 'author');   
     }
 
+    /**
+     * Update author post by id.
+     * @param {object} event
+     * @param {string} field
+     * @param {number} id
+     * @return void
+     */
     public postSelectedHandlerContent = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerPost(event, id, 'content');   
     }
 
+    /**
+     * Update post properties by id.
+     * @param {object} event
+     * @param {string} field
+     * @param {number} id
+     * @return void
+     */
     private mainUpdateHandlerPost = (event: any, id:number, field: string): void => {
         let findId = this.state.posts.findIndex(post => {
             return post.id === id;
@@ -153,6 +187,8 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         let post = {
             ...this.state.posts[findId]
         }
+
+        // Switch depending on properties.
         switch (field) {
             case 'title':
                 post.title = event.target.value;
@@ -180,6 +216,8 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     /**
      * Update selected User Id.
+     * @param {number} id
+     * @return void
      */
     public userSelectedHandler = (id: number):void => {
         this.setState({selectedUserId: id});
@@ -190,6 +228,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param {object} event
      * @param {number} id
      * @param {string} field
+     * @return void
      */
     public userSelectedHandlerName = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerUser(event, id, 'name');
@@ -200,6 +239,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param {object} event
      * @param {number} id
      * @param {string} field
+     * @return void
      */
     public userSelectedHandlerEmail = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerUser(event, id, 'email');
@@ -210,6 +250,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param {object} event
      * @param {number} id
      * @param {string} field
+     * @return void
      */
     public userSelectedHandlerStreet = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerUser(event, id, 'street');
@@ -220,6 +261,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param {object} event
      * @param {number} id
      * @param {string} field
+     * @return void
      */
     public userSelectedHandlerSuite = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerUser(event, id, 'suite');
@@ -230,6 +272,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param {object} event
      * @param {number} id
      * @param {string} field
+     * @return void
      */
     public userSelectedHandlerCity = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerUser(event, id, 'city');
@@ -240,11 +283,19 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param {object} event
      * @param {number} id
      * @param {string} field
+     * @return void
      */
     public userSelectedHandlerZipCode = (event: any, id: number, field: string):void => {
         this.mainUpdateHandlerUser(event, id, 'zipcode');
     }
 
+    /**
+     * Update user properties by id.
+     * @param {object} event
+     * @param {string} field
+     * @param {number} id
+     * @return void
+     */
     private mainUpdateHandlerUser = (event: any, id: number, field: string):void => {
         let findId = this.state.users.findIndex(user => {
             return user.id === id;
@@ -288,6 +339,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     /**
      * Hide/Show display form
+     * @return void
      */
     public displayUpdateForm = (): void => {
         let isFormDisplay = !this.state.displayUpdateForm;
@@ -296,6 +348,12 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         });
     }
 
+    /**
+     * Update post / User properties by id.
+     * @param {number} id
+     * @param {isPost} boolean
+     * @return void
+     */
     public updatePostUserHandler = (id: number, isPost:boolean):void => {
         let titleInputValue = this.updatetitleRef.current.value;
         let contentInputValue = this.updatecontentRef.current.value;
@@ -331,8 +389,9 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
     }
 
     /**
-     * Delete a User or Post
+     * Delete a User / Post by id
      * @param {number} id
+     * @param {boolean} isPost
      * @return void
      */
     public postUserDeleteHandler = (id: number, isPost: boolean):void => {
@@ -358,7 +417,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     /**
      * Add a new post
-     * return void
+     * @return void
      */
     public addDataHandler = ():void => {
         let titleInputValue = this.titleRef.current.value;
