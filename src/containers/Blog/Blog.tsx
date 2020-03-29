@@ -11,8 +11,11 @@ import FilterPostByUser from '../../components/FilterPostByUser/FilterPostByUser
 import InputFieldComponent from '../../components/InputFieldComponent/InputFieldComponent';
 import TextAreaFieldComponent from '../../components/TextAreaFieldComponent/TextAreaFieldComponent';
 
+
+// type PpostsProps for setting the Props
 interface PpostProps {}
 
+// Type posts
 interface Pposts {
     id: number,
     userId: number,
@@ -22,6 +25,7 @@ interface Pposts {
     changed?(e: any): void;
 }
 
+// type Users
 interface Uusers {
     id: number,
     name: string,
@@ -38,6 +42,7 @@ interface address {
     zipcode: string
 }
 
+// type for state.
 interface PostUserManagerState {
     displayPosts: boolean
     posts: Pposts[],
@@ -145,8 +150,14 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         this.setState({selectedUserId: id});
     }
 
+    public postSelectedPostIdHandler = (id: number):void => {
+        this.setState({
+            selectedPostId: id
+        })
+    }
+
     /**
-     * Set post id when clicked.
+     * Upadate selected post and set selected postId.
      * @param id
      * @return void
      */
@@ -159,21 +170,21 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
             ...this.state.posts[findId]
         }
 
-        console.log('post :', post);
+        console.log(event);
+        console.log(event.target.value);
         
         // update properties
         post.title = event.target.value;
+        post.body = event.target.value;
+        post.author = event.target.value;
 
-        console.log('Updated post :', post);
-
+        // set posts 
         const posts = [...this.state.posts];
         posts[findId] = post;
 
         this.setState({
-            posts: posts
+            posts: posts,
         });
-
-        this.setState({selectedPostId: id});
     }
 
 
@@ -201,16 +212,13 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 let post = {
                     ...this.state.posts[findId]
                 }
-
-                console.log('post :', post);
                 
                 // update properties
                 post.title = titleInputValue;
                 post.body = contentInputValue;
                 post.author = authorInputValue;
 
-                console.log('Updated post :', post);
-
+                // update Posts with the update post
                 const posts = [...this.state.posts];
                 posts[findId] = post;
 
@@ -378,6 +386,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 title={post.title}
                 body={post.body}
                 author={post.author}
+                clicked={() => this.postSelectedPostIdHandler(post.id)}
                 changed={(event) => this.postSelectedHandler(event, post.id)} // add two way binding to change
                 deleted={() => this.postUserDeleteHandler(post.id, true)}
             />
@@ -445,7 +454,8 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                         { posts }          
                     </section>
                     <section>
-                        <FullPost id={this.state.selectedPostId} 
+                        <FullPost id={this.state.selectedPostId}
+                            changed={(event) => this.postSelectedHandler(event, this.state.selectedPostId)} 
                             deleted={() => this.postUserDeleteHandler(this.state.selectedPostId, true)
                         } />
 

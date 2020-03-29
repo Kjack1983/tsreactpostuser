@@ -54,18 +54,6 @@ class NewPost extends Component<any, NewPostInterface> {
         let titleInputValue = this.titleRef.current.value;
         let contentInputValue = this.contentRef.current.value;
         let authorInputValue = this.authorRef.current.value;
-
-        console.log(titleInputValue);
-        console.log(contentInputValue);
-        console.log(authorInputValue);
-
-        /* 9: 
-            {userId: 1, 
-                id: 10, 
-                title: "optio molestias id quia eum", 
-                body: "quo et expedita modi cum officia vel magni↵dolorib…it↵quos veniam quod sed accusamus veritatis error", 
-                author: "Ioannis"} 
-        */
         
         let counter = 0;
         this.props.posts.forEach((element: any, index: number) => {

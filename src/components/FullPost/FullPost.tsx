@@ -4,7 +4,8 @@ import { Button } from 'reactstrap';
 import './FullPost.css';
 
 interface FullPostManager {
-    id: number,
+    id: number
+    changed?(e: any): void
     deleted?(e: any): void
 }
 
