@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { /* Form, FormGroup, Label, Input, FormText, Jumbotron, */Alert, Button } from 'reactstrap';
-import InputFieldComponent from '../../components/InputFieldComponent/InputFieldComponent';
 import axios from 'axios';
 import Post from '../Post/Post';
 import './FilterPostByUser.css';
@@ -12,7 +11,7 @@ interface FullUserManager {}
 interface loadFilterPostInterface {
     error: boolean,
     filterPosts: LoadedUserManager[],
-    inputvalue: string,
+    inputValue: string,
     selectedPostId: number
 }
 
@@ -32,7 +31,7 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
         this.state = {
             error: false,
             filterPosts: [],
-            inputvalue: '',
+            inputValue: '',
             selectedPostId: 0
         }
 
@@ -44,8 +43,19 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
      * @param id
      * @return void
      */
-    public filterPostSelectedHandler = (event: any, id: number):void => {
-        
+    public filterPostSelectedHandlerTitle = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerFilterPost(event, id, 'title');
+    }
+
+    public filterPostSelectedHandlerAuthor = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerFilterPost(event, id, 'author');
+    }
+
+    public filterPostSelectedHandlerContent = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerFilterPost(event, id, 'content');
+    }
+
+    private mainUpdateHandlerFilterPost = (event: any, id: number, field: string) : void  => {
         let findId = this.state.filterPosts.findIndex(post => {
             return post.id === id;
         })
@@ -54,12 +64,20 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
             ...this.state.filterPosts[findId]
         }
 
-        console.log('post :', post);
-        
-        // update properties
-        post.title = event.target.value;
-
-        console.log('Updated post :', post);
+        switch (field) {
+            case 'title':
+                post.title = event.target.value;
+            break;
+            case 'author':
+                post.author = event.target.value;
+            break;
+            case 'content':
+                post.body = event.target.value;
+            break;
+            default:
+                console.log('%c%s', 'color: #f2ceb6', 'No property entered');
+                break
+        }
 
         const posts = [...this.state.filterPosts];
         posts[findId] = post;
@@ -89,7 +107,7 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
     }
 
     onSearchClick = ():void => {
-        const input = this.state.inputvalue;
+        const input = this.state.inputValue;
 
         if (input !== '') {
             // Posts
@@ -135,7 +153,7 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
 
         let resultMarkup;
 
-        const { error, filterPosts: posts, inputvalue } = this.state;
+        const { error, filterPosts: posts, inputValue } = this.state;
 
         let loadPosts = [];
 
@@ -154,7 +172,9 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
                 title={post.title}
                 body={post.body}
                 author={post.author}
-                changed={(event) => this.filterPostSelectedHandler(event, post.id)}
+                changedTitle={(event) => this.filterPostSelectedHandlerTitle(event, post.id, 'title')}
+                changedAuthor={(event) => this.filterPostSelectedHandlerAuthor(event, post.id, 'author')}
+                changedContent={(event) => this.filterPostSelectedHandlerContent(event, post.id, 'content')}
                 deleted={() => this.filterPostDeleteHandler(post.id)}
             />
             });
@@ -168,7 +188,7 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
             <div className="container">
                 <h2 className="mt-2 mb-2 text-center">FilterPostsBy User ID</h2>
                 <div className="row justify-content-center">    
-                    <input name="filter" id="filter" placeholder="Please enter a number from 1 to 10" type="text" className="form-control mt-2 mb-2 w-50 text-center" onChange={(event) => this.setState({inputvalue: event.target.value})}/>
+                    <input name="filter" id="filter" placeholder="Please enter a number from 1 to 10" type="text" className="form-control mt-2 mb-2 w-50 text-center" onChange={(event) => this.setState({inputValue: event.target.value})}/>
                 </div>
                 <div className="row justify-content-center">
                     <Button onClick={this.onSearchClick} color="success">Filter</Button>

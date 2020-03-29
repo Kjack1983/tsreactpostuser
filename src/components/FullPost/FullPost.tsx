@@ -5,7 +5,7 @@ import './FullPost.css';
 
 interface FullPostManager {
     id: number
-    changed?(e: any): void
+    changedTitle?(e: any): void
     deleted?(e: any): void
 }
 

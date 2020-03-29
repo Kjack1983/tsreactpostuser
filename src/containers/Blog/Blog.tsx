@@ -146,10 +146,6 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     }
 
-    public userSelectedHandler = (id: number):void => {
-        this.setState({selectedUserId: id});
-    }
-
     public postSelectedPostIdHandler = (id: number):void => {
         this.setState({
             selectedPostId: id
@@ -161,7 +157,19 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
      * @param id
      * @return void
      */
-    public postSelectedHandler = (event: any, id: number):void => {
+    public postSelectedHandlerTitle = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerPost(event, id, 'title');   
+    }
+
+    public postSelectedHandlerAuthor = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerPost(event, id, 'author');   
+    }
+
+    public postSelectedHandlerContent = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerPost(event, id, 'content');   
+    }
+
+    private mainUpdateHandlerPost = (event: any, id:number, field: string): void => {
         let findId = this.state.posts.findIndex(post => {
             return post.id === id;
         })
@@ -169,14 +177,20 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         let post = {
             ...this.state.posts[findId]
         }
-
-        console.log(event);
-        console.log(event.target.value);
-        
-        // update properties
-        post.title = event.target.value;
-        post.body = event.target.value;
-        post.author = event.target.value;
+        switch (field) {
+            case 'title':
+                post.title = event.target.value;
+            break;
+            case 'author':
+                post.author = event.target.value;
+            break;
+            case 'content':
+                post.body = event.target.value;
+            break;    
+            default:
+                console.log('%c%s', 'color: #f2ceb6', 'No property entered');
+                break
+        } 
 
         // set posts 
         const posts = [...this.state.posts];
@@ -187,6 +201,114 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
         });
     }
 
+
+    /**
+     * Update selected User Id.
+     */
+    public userSelectedHandler = (id: number):void => {
+        this.setState({selectedUserId: id});
+    }
+
+    /**
+     * Update user name
+     * @param {object} event
+     * @param {number} id
+     * @param {string} field
+     */
+    public userSelectedHandlerName = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerUser(event, id, 'name');
+    }
+
+    /**
+     * Update email field
+     * @param {object} event
+     * @param {number} id
+     * @param {string} field
+     */
+    public userSelectedHandlerEmail = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerUser(event, id, 'email');
+    }
+
+    /**
+     * Update street field
+     * @param {object} event
+     * @param {number} id
+     * @param {string} field
+     */
+    public userSelectedHandlerStreet = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerUser(event, id, 'street');
+    }
+
+    /**
+     * Update Suite field
+     * @param {object} event
+     * @param {number} id
+     * @param {string} field
+     */
+    public userSelectedHandlerSuite = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerUser(event, id, 'suite');
+    }
+
+    /**
+     * Update city field
+     * @param {object} event
+     * @param {number} id
+     * @param {string} field
+     */
+    public userSelectedHandlerCity = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerUser(event, id, 'city');
+    }
+
+    /**
+     * Update zipcode field
+     * @param {object} event
+     * @param {number} id
+     * @param {string} field
+     */
+    public userSelectedHandlerZipCode = (event: any, id: number, field: string):void => {
+        this.mainUpdateHandlerUser(event, id, 'zipcode');
+    }
+
+    private mainUpdateHandlerUser = (event: any, id: number, field: string):void => {
+        let findId = this.state.users.findIndex(user => {
+            return user.id === id;
+        })
+        
+        let user = {
+            ...this.state.users[findId]
+        }
+        switch (field) {
+            case 'name':
+                user.name = event.target.value;
+            break;
+            case 'email':
+                user.email = event.target.value;
+            break;
+            case 'street':
+                user.address.street = event.target.value;
+            break;
+            case 'suite':
+                user.address.suite = event.target.value;
+            break;
+            case 'city':
+                user.address.city = event.target.value;
+            break;
+            case 'zipcode':
+                user.address.zipcode = event.target.value;
+            break;    
+            default:
+                console.log('%c%s', 'color: #f2ceb6', 'No property entered');
+                break
+        } 
+
+        // set posts 
+        const users = [...this.state.users];
+        users[findId] = user;
+
+        this.setState({
+            users: users,
+        });
+    }
 
     /**
      * Hide/Show display form
@@ -387,7 +509,9 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 body={post.body}
                 author={post.author}
                 clicked={() => this.postSelectedPostIdHandler(post.id)}
-                changed={(event) => this.postSelectedHandler(event, post.id)} // add two way binding to change
+                changedTitle={(event) => this.postSelectedHandlerTitle(event, post.id, 'title')}
+                changedAuthor={(event) => this.postSelectedHandlerAuthor(event, post.id, 'author')} // add two way binding to change
+                changedContent={(event) => this.postSelectedHandlerContent(event, post.id, 'content')}
                 deleted={() => this.postUserDeleteHandler(post.id, true)}
             />
         })
@@ -399,6 +523,12 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                 email={user.email}
                 address={user.address}
                 clicked={() => this.userSelectedHandler(user.id)}
+                changedName={(event) => this.userSelectedHandlerName(event, user.id, 'name')}
+                changedEmail={(event) => this.userSelectedHandlerEmail(event, user.id, 'email')} // add two way binding to change
+                changedAddress={(event) => this.userSelectedHandlerStreet(event, user.id, 'street')}
+                changedSuite={(event) => this.userSelectedHandlerSuite(event, user.id, 'suite')}
+                changedCity={(event) => this.userSelectedHandlerCity(event, user.id, 'city')}
+                changedZipcode={(event) => this.userSelectedHandlerZipCode(event, user.id, 'zipcode')}
                 deleted={() => this.postUserDeleteHandler(user.id, false)}
             />
         })
@@ -454,8 +584,8 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
                         { posts }          
                     </section>
                     <section>
-                        <FullPost id={this.state.selectedPostId}
-                            changed={(event) => this.postSelectedHandler(event, this.state.selectedPostId)} 
+                        <FullPost id={this.state.selectedPostId} 
+                            changedTitle={(event) => this.postSelectedHandlerTitle(event, this.state.selectedPostId, 'title')} 
                             deleted={() => this.postUserDeleteHandler(this.state.selectedPostId, true)
                         } />
 
