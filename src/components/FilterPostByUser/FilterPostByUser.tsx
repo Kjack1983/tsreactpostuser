@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { /* Form, FormGroup, Label, Input, FormText, Jumbotron, */Alert, Button } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 import axios from 'axios';
 import Post from '../Post/Post';
 import './FilterPostByUser.css';
