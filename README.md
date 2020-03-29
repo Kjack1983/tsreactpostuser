@@ -10,7 +10,7 @@ Post User Application
 -npm reactstrap frameworks (boostrap).
 -npm libraries axios
 
-- Functionality in detail`#1589F0`
+- Functionality in detail
 -1) "Creates user || Delete User || update User"
 -2) "Creates post || Delete Post || update Post || filter Post by User id"
 
