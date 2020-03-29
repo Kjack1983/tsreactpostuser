@@ -3,12 +3,12 @@ Post User Application
 
 ```diff
 
--The tsreactpostuser repository. It's an application implemented in react and typescript and was created for testing purposes. It consumes jsonplaceholder API http://jsonplaceholder.typicode.com/
+-Post User web app is a consuming Restful web application implemented in react and typescript created for testing purposes. It consumes jsonplaceholder API http://jsonplaceholder.typicode.com/
 
 -The web app can perform /create/update/delete actions to update resources using react hooks, props, refs, two way bindings, forwardRef, functional components.
 
--used frameworks reactstrap (boostrap).
--libraries axios
+-npm reactstrap frameworks (boostrap).
+-npm libraries axios
 
 - Functionality in detail`#1589F0`
 -1) "Creates user || Delete User || update User"
