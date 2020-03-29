@@ -29,6 +29,8 @@ Installation Requirements
 
 -3) npm install bootstrap
 
+-4) npm start
+
 ```
 
 
