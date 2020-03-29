@@ -7,7 +7,7 @@ Post User Application
 
 -![#1589F0]The web app can perform /create/update/delete actions to update resources using react hooks, props, refs, two way bindings, forwardRef, functional components.`#1589F0`
 
--![#1589F0]-used frameworks reactstrap
+-![#1589F0]-used frameworks reactstrap (boostrap).
 -libraries axios`#1589F0`
 
 -![#1589F0]- Functionality in detail`#1589F0`
