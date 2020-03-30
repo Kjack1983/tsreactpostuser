@@ -15,31 +15,27 @@ class FullPost extends Component<FullPostManager, loadPostInterface> {
         }
     }
 
-    componentDidUpdate():void {
+    async componentDidUpdate() {
         if (this.props.id) {
 
             if(!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.id)) {
-                axios.get('http://jsonplaceholder.typicode.com/posts/' + this.props.id).then(response => {
-                    console.log('response, ', response);
-                    
-                    if (response.status !== 200) {
-                        this.setState({
-                            error: true
-                        })
-                        return;
-                    }
-
+                const response = await axios.get('http://jsonplaceholder.typicode.com/posts/' + this.props.id);
+                
+                if (response.status !== 200) {
                     this.setState({
-                        error: false,
-                        loadedPost: {
-                            id: response.data.id,
-                            title: response.data.title,
-                            body: response.data.body
-                        }
+                        error: true
                     })
-                }).catch(err => {
-                    console.log('err :', err);
-                })
+                    return;
+                }
+
+                this.setState({
+                    error: false,
+                    loadedPost: {
+                        id: response.data.id,
+                        title: response.data.title,
+                        body: response.data.body
+                    }
+                });
             }
         }
     }
