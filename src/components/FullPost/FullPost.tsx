@@ -63,6 +63,7 @@ class FullPost extends Component<FullPostManager, loadPostInterface> {
                 <div className="spinner-border text-danger" role="status">
                   <span className="sr-only">Loading...</span>
                 </div>
+                <h3>Please select a Post!</h3>
             </div>;
         }
 
