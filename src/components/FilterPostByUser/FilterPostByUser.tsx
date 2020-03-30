@@ -101,44 +101,41 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
         })
     }
 
-    onSearchClick = ():void => {
+    onSearchClick = async () => {
         const input = this.state.inputValue;
 
         if (input !== '') {
-            // Posts
-            axios.get(`http://jsonplaceholder.typicode.com/posts?userId=${input}`).then(response => {
-                
-                console.log(response);
-                if(response.status !== 200) {
-                    this.setState({
-                        error: true
-                    });
-                    return;
-                }
-            
-                // Display only 8 posts.
-                const posts = response.data.slice(0, 8);
-                const updatedPosts = posts.map((post: LoadedUserManager) => {
-                    return {
-                        ...post,
-                        author: 'Ioannis'
-                    }
-                });
 
-                if (updatedPosts.length) {
-                    this.setState({
-                        error: false,
-                        filterPosts: updatedPosts
-                    })
-                } else {
-                    this.setState({
-                        error: true
-                    });
-                    return;
+            const response = await axios.get(`http://jsonplaceholder.typicode.com/posts?userId=${input}`);
+            
+            if(response.status !== 200) {
+                this.setState({
+                    error: true
+                });
+                return;
+            }
+        
+            // Display only 8 posts.
+            const posts = response.data.slice(0, 8);
+            const updatedPosts = posts.map((post: LoadedUserManager) => {
+                return {
+                    ...post,
+                    author: 'Ioannis'
                 }
-            }).catch((err) => {
-                console.log(err);
-            })
+            });
+
+            if (updatedPosts.length) {
+                this.setState({
+                    error: false,
+                    filterPosts: updatedPosts
+                })
+            } else {
+                this.setState({
+                    error: true
+                });
+                return;
+            }
+            
         } else {
             console.log(`${input} is empty`);
         }
