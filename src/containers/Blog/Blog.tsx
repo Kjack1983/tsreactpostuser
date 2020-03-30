@@ -83,12 +83,41 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
 
     }
 
+    async componentDidMount() {
+        const response = await fetch(`http://jsonplaceholder.typicode.com/posts`);
+        const json = await response.json();
+
+        // Display only 6 posts.
+        const posts = json.slice(0, 8);
+        const updatedPosts = posts.map((post: Pposts) => {
+            return {
+                ...post,
+                author: 'Ioannis'
+            }
+        });
+        this.setState({
+            posts: updatedPosts
+        })
+
+        // Users
+        const responseUsers = await fetch(`http://jsonplaceholder.typicode.com/users`);
+        const jsonusers = await responseUsers.json();
+
+        // Display only 6 posts.
+        const updatedUsers = jsonusers.slice(0, 8);
+
+        this.setState({
+            users: updatedUsers
+        })
+
+      }
+
     /**
      * triggered after JSX is rendered
      * fetching data from the Api for presentation.
      * @return void
      */
-    componentDidMount():void {
+    /* componentDidMount():void {
 
         // Posts
         fetch('http://jsonplaceholder.typicode.com/posts').then(response => {
@@ -126,7 +155,7 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
             console.log(err);
         })
 
-    }
+    } */
 
     /**
      * Update / set post id
