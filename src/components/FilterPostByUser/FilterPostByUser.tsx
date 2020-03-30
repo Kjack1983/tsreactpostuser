@@ -135,41 +135,7 @@ class FilterPostByUser extends Component<FullUserManager, loadFilterPostInterfac
                 });
                 return;
             }
-
-           /*  // Posts
-            axios.get(`http://jsonplaceholder.typicode.com/posts?userId=${input}`).then(response => {
-                
-                console.log(response);
-                if(response.status !== 200) {
-                    this.setState({
-                        error: true
-                    });
-                    return;
-                }
             
-                // Display only 8 posts.
-                const posts = response.data.slice(0, 8);
-                const updatedPosts = posts.map((post: LoadedUserManager) => {
-                    return {
-                        ...post,
-                        author: 'Ioannis'
-                    }
-                });
-
-                if (updatedPosts.length) {
-                    this.setState({
-                        error: false,
-                        filterPosts: updatedPosts
-                    })
-                } else {
-                    this.setState({
-                        error: true
-                    });
-                    return;
-                }
-            }).catch((err) => {
-                console.log(err);
-            }) */
         } else {
             console.log(`${input} is empty`);
         }
