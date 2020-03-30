@@ -84,8 +84,9 @@ class Blog extends React.Component<PpostProps, PostUserManagerState>{
     }
 
     async componentDidMount() {
-        const response = await fetch(`http://jsonplaceholder.typicode.com/posts`);
-        const json = await response.json();
+        //posts
+        const responsePosts = await fetch(`http://jsonplaceholder.typicode.com/posts`);
+        const json = await responsePosts.json();
 
         // Display only 6 posts.
         const posts = json.slice(0, 8);
